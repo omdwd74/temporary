@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        form {
+       width: 50%;
+     }
+     
+     .hide {
+       display: none;
+     }
+     
+     .show {
+       display: block;
+     }
+         </style>
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <form  id="registerForm" action="/register" method="post">
+        <div>
+            <label class="username">UserName:</label>
+            <input type="text" name="username" placeholder="username" id="username">
+
+        </div>
+        <div>
+            <label class="branch">Branch</label>
+            <select aria-placeholder="select" type="text" name="branch" id="branchSelect">
+               
+                <option value="cse">CSE</option>
+                <option value="cse & AI ML">CSE &AI ML</option>
+                <option value="other">Other</option>
+            </select>
+            
+                  <input type="text" name="otherBranch" id="otherBranch" class="hide" placeholder="Enter New Branch">
+                
+        </div>
+        <button type="button" id="theButton">Click Me</button>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        $(document).ready(function(){
+            $("#theButton").click(function(){
+               $("#otherBranch").toggleClass("hide show");
+
+            })
+        });
+        $('#registerForm').submit(function(e){
+            e.preventDefault();
+            var username  = $('#username').val();
+            var branch = $('#branchSelect').val();
+            var otherBranch = $('#otherBranch').val();
+            if(branch === 'other')
+            {
+                branch = otherBranch;
+            }
+            $.post('/register',{username:username,branch:branch},function(response)
+            {
+                // console.log(response);
+                if (response === 'New branch added') {
+        $('#branchSelect option[value="other"]').before($('<option>', { value: branch, text: branch }));
+    }
+            })
+        })
+    </script>
+   
+
+</body>
+</html>
